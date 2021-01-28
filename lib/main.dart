@@ -1,61 +1,45 @@
 import 'package:flutter/material.dart';
-import 'package:yusuke/next_page.dart';
+import 'package:provider/provider.dart';
+import 'package:yusuke/main_model.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'yusukeのパドックアプリ',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  final items = ['yusuke1', 'yusuke2', 'yusuke3'];
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('yusukeのアプリ'),
-        actions: <Widget>[
-          Icon(Icons.add),
-          Icon(Icons.share),
-        ],
-      ),
-      body: Container(
-        width: double.infinity,
-        child: GridView.count(
-          crossAxisCount: 2,
-          children: List.generate(100, (index) {
-            return Column(
-              children: [
-                Expanded(
-                  child: Image.network(
-                      'https://pbs.twimg.com/profile_images/1287121496901443584/Yoqq8dxL_400x400.jpg',
-                  ),
+      title: 'yusukeのアプリ',
+      home: ChangeNotifierProvider<MainModel>(
+        create: (_) => MainModel(),
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text('yusukeのアプリ'),
+            ),
+          body: Consumer<MainModel>(builder: (context, model, child) {
+              return Center(
+                child: Column(
+                  children: [
+                    Text(
+                      model.kboyText,
+                      style: TextStyle(
+                        fontSize: 30,
+                      ),
+                    ),
+                    RaisedButton(
+                      child: Text('ボタン'),
+                      onPressed: () {
+                        // TODO　ここでなにかする
+                        model.changeKboyText();
+                      },
+                    ),
+                  ],
                 ),
-                Text('yusuke $index')
-              ],
-            );
-          }),
+              );
+            }
+          ),
         ),
       ),
     );
